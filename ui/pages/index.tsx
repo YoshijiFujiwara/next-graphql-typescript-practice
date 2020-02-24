@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { withApollo } from "../lib/apollo";
 import { gql, useQuery } from "@apollo/client";
 import { useTasksQuery, TaskStatus } from "../generated/graphql";
+import TaskList from "../components/TaskList";
 
 interface InitialProps {}
 
@@ -18,15 +19,7 @@ const IndexPage: NextPage<Props, InitialProps> = () => {
     return <p>An error occurered</p>;
   }
   const tasks = data?.tasks;
-  return tasks ? (
-    <ul>
-      {tasks.map(task => {
-        return <li key={task.id}>{task.title}</li>;
-      })}
-    </ul>
-  ) : (
-    <p>There no tasks here</p>
-  );
+  return tasks ? <TaskList tasks={tasks} /> : <p>There no tasks here</p>;
 };
 
 const IndexPageWithApollo = withApollo(IndexPage);
