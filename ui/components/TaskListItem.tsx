@@ -14,20 +14,21 @@ import {
 
 interface Props {
   task: Task;
+  status?: TaskStatus;
 }
 
-const TaskListItem: React.FC<Props> = ({ task }) => {
+const TaskListItem: React.FC<Props> = ({ task, status }) => {
   const [deleteTask, { loading, error }] = useDeleteTaskMutation({
     update: (cache, result) => {
       const data = cache.readQuery<TasksQuery, TasksQueryVariables>({
         query: TasksDocument,
-        variables: { status: TaskStatus.Active }
+        variables: { status }
       });
 
       if (data) {
         cache.writeQuery<TasksQuery, TasksQueryVariables>({
           query: TasksDocument,
-          variables: { status: TaskStatus.Active },
+          variables: { status },
           data: {
             tasks: data.tasks.filter(
               ({ id }) => id !== result.data?.deleteTask?.id
