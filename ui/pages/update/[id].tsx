@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { withApollo } from "../../lib/apollo";
 import { useTaskQuery } from "../../generated/graphql";
+import UpdateTaskForm from "../../components/UpdateTaskForm";
 
 const UpdatePage: NextPage = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const UpdatePage: NextPage = () => {
       ) : error ? (
         <p>エラーだよ</p>
       ) : task ? (
-        task.title
+        <UpdateTaskForm initialValues={{ title: task.title }} />
       ) : (
         <p>タスク見つからん</p>
       )}
