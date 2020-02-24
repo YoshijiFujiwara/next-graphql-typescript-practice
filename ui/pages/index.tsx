@@ -1,20 +1,33 @@
 import React from "react";
 import { NextPage } from "next";
 import { withApollo } from "../lib/apollo";
+import { gql, useQuery } from "@apollo/client";
+import { useTasksQuery, TaskStatus } from "../generated/graphql";
 
-interface InitialProps {
-  greeting: string;
-}
+interface InitialProps {}
 
 interface Props extends InitialProps {}
 
-const IndexPage: NextPage<Props, InitialProps> = props => {
-  return <div>{props.greeting}</div>;
+const IndexPage: NextPage<Props, InitialProps> = () => {
+  const { loading, error, data } = useTasksQuery({
+    variables: { status: TaskStatus.Active }
+  });
+  if (loading) {
+    return <p>Loading...</p>;
+  } else if (error) {
+    return <p>An error occurered</p>;
+  }
+  const tasks = data?.tasks;
+  return tasks ? (
+    <ul>
+      {tasks.map(task => {
+        return <li key={task.id}>{task.title}</li>;
+      })}
+    </ul>
+  ) : (
+    <p>There no tasks here</p>
+  );
 };
-
-IndexPage.getInitialProps = async () => ({
-  greeting: "Hello world"
-});
 
 const IndexPageWithApollo = withApollo(IndexPage);
 

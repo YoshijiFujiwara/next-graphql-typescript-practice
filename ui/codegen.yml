@@ -1,0 +1,16 @@
+overwrite: true
+schema: "http://localhost:3001/graphql"
+documents: "graphql/**/*.graphql"
+generates:
+  generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      # hooks使用する設定だ
+      # graphql codegenのサイトを参考に
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      reactApolloVersion: 3
