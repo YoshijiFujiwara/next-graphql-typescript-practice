@@ -8,11 +8,13 @@ import CreateTaskForm from "../components/CreateTaskForm";
 import { useRouter } from "next/router";
 import TaskFilter from "../components/TaskFilter";
 
-interface InitialProps {}
+interface InitialProps {
+  ssr: boolean;
+}
 
 interface Props extends InitialProps {}
 
-const IndexPage: NextPage<Props, InitialProps> = () => {
+const IndexPage: NextPage<Props, InitialProps> = ({ ssr }) => {
   const router = useRouter();
   const status =
     typeof router.query.status === "string"
@@ -20,7 +22,7 @@ const IndexPage: NextPage<Props, InitialProps> = () => {
       : undefined;
   const { loading, error, data, refetch } = useTasksQuery({
     variables: { status }, // 全てのタスク
-    fetchPolicy: "cache-and-network"
+    fetchPolicy: ssr ? "cache-first" : "cache-and-network"
   });
   const tasks = data?.tasks;
   if (loading && !tasks) {
@@ -39,6 +41,12 @@ const IndexPage: NextPage<Props, InitialProps> = () => {
       <TaskFilter status={status} />
     </>
   );
+};
+
+IndexPage.getInitialProps = async ctx => {
+  return {
+    ssr: !!ctx.req
+  };
 };
 
 const IndexPageWithApollo = withApollo(IndexPage);
