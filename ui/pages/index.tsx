@@ -4,6 +4,7 @@ import { withApollo } from "../lib/apollo";
 import { gql, useQuery } from "@apollo/client";
 import { useTasksQuery, TaskStatus } from "../generated/graphql";
 import TaskList from "../components/TaskList";
+import CreateTaskForm from "../components/CreateTaskForm";
 
 interface InitialProps {}
 
@@ -19,7 +20,12 @@ const IndexPage: NextPage<Props, InitialProps> = () => {
     return <p>An error occurered</p>;
   }
   const tasks = data?.tasks;
-  return tasks ? <TaskList tasks={tasks} /> : <p>There no tasks here</p>;
+  return (
+    <>
+      <CreateTaskForm />
+      {tasks ? <TaskList tasks={tasks} /> : <p>There no tasks here</p>}
+    </>
+  );
 };
 
 const IndexPageWithApollo = withApollo(IndexPage);
