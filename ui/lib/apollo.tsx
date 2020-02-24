@@ -1,22 +1,22 @@
 import React from "react";
 import Head from "next/head";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink
+} from "@apollo/client";
 import fetch from "isomorphic-unfetch";
 import { NextPage } from "next";
 
 export type ApolloClientCache = any;
+let apolloClient: ApolloClient<any> | null = null;
 
-let apolloClient: ApolloClient<ApolloClientCache> | null = null;
-
-interface WithApolloInitialProps {
-  apolloState?: ApolloClientCache;
-}
+interface WithApolloInitialProps {}
 
 interface WithApolloProps extends WithApolloInitialProps {
   apolloClient?: ApolloClient<ApolloClientCache>;
+  apolloState: ApolloClientCache;
 }
 
 /**
