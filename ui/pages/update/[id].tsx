@@ -22,7 +22,7 @@ const UpdatePage: NextPage = () => {
       ) : error ? (
         <p>エラーだよ</p>
       ) : task ? (
-        <UpdateTaskForm initialValues={{ title: task.title }} />
+        <UpdateTaskForm initialValues={{ id: task.id, title: task.title }} />
       ) : (
         <p>タスク見つからん</p>
       )}

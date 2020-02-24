@@ -13,7 +13,7 @@ const TaskList: React.FC<Props> = ({ tasks }) => {
         return (
           <li className="task-list-item" key={task.id}>
             <Link href="/update/[id]" as={`/update/${task.id}`}>
-              <a>{task.title}</a>
+              <a className="task-list-item-title">{task.title}</a>
             </Link>
           </li>
         );
