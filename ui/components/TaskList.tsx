@@ -5,14 +5,13 @@ import TaskListItem from "./TaskListItem";
 
 interface Props {
   tasks: Task[];
-  status?: TaskStatus;
 }
 
-const TaskList: React.FC<Props> = ({ tasks, status }) => {
+const TaskList: React.FC<Props> = ({ tasks }) => {
   return (
     <ul className="task-list">
       {tasks.map(task => {
-        return <TaskListItem key={task.id} status={status} task={task} />;
+        return <TaskListItem key={task.id} task={task} />;
       })}
     </ul>
   );

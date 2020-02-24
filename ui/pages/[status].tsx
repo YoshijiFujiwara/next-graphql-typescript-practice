@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import { NextPage } from "next";
 import { withApollo } from "../lib/apollo";
 import { gql, useQuery } from "@apollo/client";
@@ -13,6 +13,12 @@ interface InitialProps {
 }
 
 interface Props extends InitialProps {}
+
+interface TaskFilterContextValue {
+  status?: TaskStatus;
+}
+
+export const TaskFilterContext = createContext<TaskFilterContextValue>({});
 
 const IndexPage: NextPage<Props, InitialProps> = ({ ssr }) => {
   const router = useRouter();
@@ -30,16 +36,14 @@ const IndexPage: NextPage<Props, InitialProps> = ({ ssr }) => {
   } else if (error) {
     return <p>An error occurered</p>;
   }
+
+  const taskFilter = { status };
   return (
-    <>
+    <TaskFilterContext.Provider value={taskFilter}>
       <CreateTaskForm onTaskCreated={refetch} />
-      {tasks ? (
-        <TaskList status={status} tasks={tasks} />
-      ) : (
-        <p>There no tasks here</p>
-      )}
-      <TaskFilter status={status} />
-    </>
+      {tasks ? <TaskList tasks={tasks} /> : <p>There no tasks here</p>}
+      <TaskFilter />
+    </TaskFilterContext.Provider>
   );
 };
 
