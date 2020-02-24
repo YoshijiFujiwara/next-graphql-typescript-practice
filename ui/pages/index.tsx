@@ -12,7 +12,7 @@ interface Props extends InitialProps {}
 
 const IndexPage: NextPage<Props, InitialProps> = () => {
   const { loading, error, data, refetch } = useTasksQuery({
-    variables: { status: TaskStatus.Active }
+    variables: { status: undefined } // 全てのタスク
   });
   if (loading) {
     return <p>Loading...</p>;
